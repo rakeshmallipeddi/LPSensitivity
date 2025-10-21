@@ -1,454 +1,82 @@
-        function checkProblem2() {<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensitivity Analysis Exercise</title>
+    <title>Sensitivity Analysis – Problem 1 Only</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
-            min-height: 100vh;
-            padding: 20px;
+            min-height: 100vh; padding: 20px;
         }
-
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-
-        .header {
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            color: white;
-            padding: 40px;
-            text-align: center;
+        .header { background: linear-gradient(135deg, #43cea2, #185a9d); color: white; padding: 40px; text-align: center; }
+        .header h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.95; }
+        .progress-bar { background: #f0f0f0; height: 10px; }
+        .progress-fill { background: linear-gradient(135deg, #43cea2, #185a9d); height: 100%; width: 0%; transition: width 0.5s ease; }
+        .nav-tabs { display: flex; background: #f8f9fa; border-bottom: 2px solid #ddd; }
+        .tab { flex: 1; padding: 16px; text-align: center; cursor: pointer; background: white; font-weight: 600; color: #185a9d; border: none; }
+        .content { padding: 32px; }
+        .problem-header { background: #f8f9fa; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #43cea2; }
+        .problem-header h2 { color: #185a9d; margin-bottom: 10px; }
+        .difficulty-badge { display: inline-block; padding: 6px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; background:#fed7d7;color:#742a2a;}
+        .solver-output { background: #fff9e6; padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #ffd54f; }
+        .solver-output h3 { color: #e65100; margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; background: white; }
+        th, td { padding: 12px; text-align: left; border: 1px solid #ddd; }
+        th { background: #185a9d; color: white; }
+        tr:nth-child(even) { background: #f8f9fa; }
+        .question-section { background: #e3f2fd; padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 5px solid #2196f3; }
+        .question { margin: 18px 0; padding: 16px; background: white; border-radius: 10px; }
+        .question-number { display: inline-block; background: #185a9d; color: white; width: 30px; height: 30px; border-radius: 50%; text-align: center; line-height: 30px; margin-right: 10px; font-weight: bold; }
+        .input-group { margin-top: 10px; }
+        .input-group input[type="text"], .input-group input[type="number"] {
+            width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-family: 'Courier New', monospace;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
-
-        .progress-bar {
-            background: #f0f0f0;
-            height: 10px;
-            margin: 0;
-        }
-
-        .progress-fill {
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .nav-tabs {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #ddd;
-            overflow-x: auto;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            border: none;
-            background: transparent;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #666;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-            min-width: 150px;
-        }
-
-        .tab:hover {
-            background: #e9ecef;
-        }
-
-        .tab.active {
-            background: white;
-            color: #185a9d;
-            border-bottom: 3px solid #43cea2;
-        }
-
-        .tab .difficulty {
-            display: block;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            opacity: 0.8;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .problem {
-            display: none;
-        }
-
-        .problem.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .problem-header {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border-left: 5px solid #43cea2;
-        }
-
-        .problem-header h2 {
-            color: #185a9d;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-
-        .problem-header .difficulty-badge {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .difficulty-easy {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-
-        .difficulty-medium {
-            background: #feebc8;
-            color: #7c2d12;
-        }
-
-        .difficulty-hard {
-            background: #fed7d7;
-            color: #742a2a;
-        }
-
-        .problem-header p {
-            color: #555;
-            line-height: 1.6;
-            font-size: 1.05rem;
-            margin: 10px 0;
-        }
-
-        .solver-output {
-            background: #fff9e6;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border: 2px solid #ffd54f;
-        }
-
-        .solver-output h3 {
-            color: #e65100;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background: #185a9d;
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .question-section {
-            background: #e3f2fd;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 25px 0;
-            border-left: 5px solid #2196f3;
-        }
-
-        .question {
-            margin: 25px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-        }
-
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .question-number {
-            display: inline-block;
-            background: #185a9d;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 30px;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .input-group {
-            margin: 15px 0;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .input-group input[type="text"],
-        .input-group input[type="number"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #43cea2;
-        }
-
-        .input-group input.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-        }
-
-        .input-group input.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-        }
-
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .radio-option:hover {
-            background: #e9ecef;
-            border-color: #43cea2;
-        }
-
-        .radio-option input[type="radio"] {
-            margin-right: 12px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .radio-option label {
-            cursor: pointer;
-            font-size: 1rem;
-            color: #333;
-            flex: 1;
-        }
-
+        .input-group input.correct { border-color: #4caf50; background: #e8f5e9; }
+        .input-group input.incorrect { border-color: #f44336; background: #ffebee; }
+        .radio-group { display: flex; flex-direction: column; gap: 12px; }
+        .radio-option { display: flex; align-items: center; padding: 14px; background: #f8f9fa; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; }
+        .radio-option input[type="radio"] { margin-right: 12px; width: 20px; height: 20px; cursor: pointer; }
         .check-btn {
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #43cea2, #185a9d); color: white; border: none;
+            padding: 14px 32px; border-radius: 30px; font-weight: 700; cursor: pointer; margin-top: 10px;
         }
-
-        .check-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .feedback {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-        }
-
-        .feedback.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .feedback.correct {
-            background: #e8f5e9;
-            border-left: 5px solid #4caf50;
-            color: #2e7d32;
-        }
-
-        .feedback.incorrect {
-            background: #ffebee;
-            border-left: 5px solid #f44336;
-            color: #c62828;
-        }
-
-        .feedback.partial {
-            background: #fff9e6;
-            border-left: 5px solid #ff9800;
-            color: #e65100;
-        }
-
-        .feedback h4 {
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .key-concept {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #4caf50;
-        }
-
-        .key-concept h4 {
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-
-        .key-concept ul {
-            margin: 10px 0;
-            padding-left: 25px;
-        }
-
-        .key-concept li {
-            margin: 8px 0;
-            color: #1b5e20;
-            line-height: 1.6;
-        }
-
+        .feedback { margin-top: 16px; padding: 16px; border-radius: 10px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #e8f5e9; border-left: 5px solid #4caf50; color: #2e7d32; }
+        .feedback.partial { background: #fff9e6; border-left: 5px solid #ff9800; color: #e65100; }
+        .feedback.incorrect { background: #ffebee; border-left: 5px solid #f44336; color: #c62828; }
         .score-display {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-            text-align: center;
+            position: fixed; top: 20px; right: 20px; background: white; padding: 16px; border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1000; text-align: center;
         }
-
-        .score-display h3 {
-            color: #185a9d;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .score-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #43cea2;
-        }
-
+        .score-display h3 { color: #185a9d; margin-bottom: 6px; font-size: 0.95rem; }
+        .score-value { font-size: 1.6rem; font-weight: bold; color: #43cea2; }
         @media (max-width: 768px) {
-            .content {
-                padding: 20px;
-            }
-
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .nav-tabs {
-                flex-direction: column;
-            }
-
-            .score-display {
-                position: static;
-                margin: 20px;
-            }
-
-            table {
-                font-size: 0.85rem;
-            }
-
-            th, td {
-                padding: 8px;
-            }
+            .content { padding: 20px; }
+            .score-display { position: static; margin: 10px 0 0; }
+            table { font-size: 0.9rem; } th, td { padding: 8px; }
         }
     </style>
 </head>
 <body>
     <div class="score-display">
         <h3>Your Score</h3>
-        <div class="score-value"><span id="totalScore">0</span> / 25</div>
+        <div class="score-value"><span id="totalScore">0</span> / 5</div>
     </div>
 
     <div class="container">
         <div class="header">
             <h1>📊 Sensitivity Analysis Practice</h1>
-            <p>Master sensitivity analysis through 5 progressive problems</p>
+            <p>Problem 1 only – Multi‑Product Manufacturing</p>
         </div>
 
         <div class="progress-bar">
@@ -456,34 +84,18 @@
         </div>
 
         <div class="nav-tabs">
-            <button class="tab active" onclick="showProblem(1)">
-                Problem 1
-                <span class="difficulty">Easy</span>
-            </button>
-            <button class="tab" onclick="showProblem(2)">
-                Problem 2
-                <span class="difficulty">Easy-Medium</span>
-            </button>
-            <button class="tab" onclick="showProblem(3)">
-                Problem 3
-                <span class="difficulty">Medium</span>
-            </button>
-            <button class="tab" onclick="showProblem(4)">
-                Problem 4
-                <span class="difficulty">Medium-Hard</span>
-            </button>
             <button class="tab" onclick="showProblem(5)">
-                Problem 5
+                Problem 1
                 <span class="difficulty">Hard</span>
             </button>
         </div>
 
         <div class="content">
-            <!-- Problem 5: Hard - Complex Multi-Period -->
-            <div class="problem" id="problem5">
+            <!-- Problem 1: Hard - Complex Multi-Period -->
+            <div class="problem active" id="problem5">
                 <div class="problem-header">
-                    <span class="difficulty-badge difficulty-hard">⭐⭐⭐⭐⭐ Hard</span>
-                    <h2>Problem 5: Multi-Product Manufacturing</h2>
+                    <span class="difficulty-badge">⭐⭐⭐⭐⭐ Hard</span>
+                    <h2>Problem 1: Multi-Product Manufacturing</h2>
                     <p>A manufacturer produces three products (A, B, C) across two departments with multiple constraints.</p>
                     <p style="margin-top: 10px;"><strong>Objective Function:</strong> Maximize Z = 60A + 50B + 40C</p>
                     <p><strong>Constraints:</strong></p>
@@ -498,7 +110,6 @@
 
                 <div class="solver-output">
                     <h3>📋 Solver Output</h3>
-                    
                     <h4 style="margin-top: 20px; color: #185a9d;">Decision Variables:</h4>
                     <table>
                         <tr>
@@ -595,7 +206,7 @@
                             What is the optimal profit?
                         </div>
                         <div class="input-group">
-                            <input type="number" id="p5q1" placeholder="Enter profit">
+                            <input type="number" id="p1q1" placeholder="Enter profit">
                         </div>
                     </div>
 
@@ -606,7 +217,7 @@
                         </div>
                         <div class="input-group">
                             <label>Enter constraint names separated by commas (e.g., "Assembly, Finishing")</label>
-                            <input type="text" id="p5q2" placeholder="Enter binding constraints">
+                            <input type="text" id="p1q2" placeholder="Enter binding constraints">
                         </div>
                     </div>
 
@@ -616,18 +227,18 @@
                             Why should Product C not be produced?
                         </div>
                         <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p5q3" id="p5q3a" value="reducedcost">
-                                <label for="p5q3a">It has a positive reduced cost of $8, meaning profit would need to increase by $8 to make it worthwhile</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p5q3" id="p5q3b" value="resources">
-                                <label for="p5q3b">Not enough resources available</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p5q3" id="p5q3c" value="demand">
-                                <label for="p5q3c">No market demand exists</label>
-                            </div>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q3" id="p1q3a" value="reducedcost">
+                                It has a positive reduced cost of $8, meaning profit would need to increase by $8 to make it worthwhile
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q3" id="p1q3b" value="resources">
+                                Not enough resources available
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q3" id="p1q3c" value="demand">
+                                No market demand exists
+                            </label>
                         </div>
                     </div>
 
@@ -637,14 +248,14 @@
                             If the profit per unit of Product A changes from $60 to $75, will the optimal production plan change?
                         </div>
                         <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p5q4" id="p5q4a" value="no">
-                                <label for="p5q4a">No, $75 is within the allowable range [$50, $80]</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p5q4" id="p5q4b" value="yes">
-                                <label for="p5q4b">Yes, it exceeds the allowable increase</label>
-                            </div>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q4" id="p1q4a" value="no">
+                                No, $75 is within the allowable range [$50, $80]
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q4" id="p1q4b" value="yes">
+                                Yes, it exceeds the allowable increase
+                            </label>
                         </div>
                     </div>
 
@@ -654,18 +265,18 @@
                             What is the economic interpretation of the shadow price of -$5 for the "Min Product A" constraint?
                         </div>
                         <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p5q5" id="p5q5a" value="hurts">
-                                <label for="p5q5a">Each unit increase in the minimum reduces profit by $5; this constraint is forcing us to produce more A than optimal</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p5q5" id="p5q5b" value="helps">
-                                <label for="p5q5b">The constraint helps increase profit by $5 per unit</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p5q5" id="p5q5c" value="nonbinding">
-                                <label for="p5q5c">The constraint is non-binding and has no effect</label>
-                            </div>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q5" id="p1q5a" value="hurts">
+                                Each unit increase in the minimum reduces profit by $5; this constraint is forcing us to produce more A than optimal
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q5" id="p1q5b" value="helps">
+                                The constraint helps increase profit by $5 per unit
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="p1q5" id="p1q5c" value="nonbinding">
+                                The constraint is non-binding and has no effect
+                            </label>
                         </div>
                     </div>
 
@@ -673,35 +284,32 @@
                     <div class="feedback" id="feedback5"></div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
+        // With only Problem 1, keep the same scoring mechanics but cap at 5.
         let totalScore = 0;
+        // Keep the array length 5 so updateScore logic for index 4 works unchanged.
         let problemScores = [0, 0, 0, 0, 0];
 
         function showProblem(num) {
-            document.querySelectorAll('.problem').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            
-            document.getElementById('problem' + num).classList.add('active');
-            document.querySelectorAll('.tab')[num - 1].classList.add('active');
-
-            updateProgressBar();
+            // Only one problem present; ensure the section is visible.
+            document.getElementById('problem5').classList.add('active');
+            document.getElementById('problem5').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function updateProgressBar() {
-            const progress = (totalScore / 25) * 100;
+            const progress = (totalScore / 5) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
         }
 
-        function checkProblem1() {
+        function checkProblem5() {
             let score = 0;
 
-            // Q1: 3(30) + 4(20) = 90 + 80 = 170
+            // Q1: 60(30) + 50(32) + 40(0) = 1800 + 1600 + 0 = 3400
             const q1 = parseFloat(document.getElementById('p1q1').value);
-            if (q1 === 170) {
+            if (q1 === 3400) {
                 score++;
                 document.getElementById('p1q1').classList.add('correct');
                 document.getElementById('p1q1').classList.remove('incorrect');
@@ -710,231 +318,41 @@
                 document.getElementById('p1q1').classList.remove('correct');
             }
 
-            // Q2: Both binding (Final Value = RHS)
-            const q2 = document.querySelector('input[name="p1q2"]:checked');
-            if (q2 && q2.value === 'yes') score++;
-
-            // Q3: Shadow price of milk = 1
-            const q3 = parseFloat(document.getElementById('p1q3').value);
-            if (q3 === 1) {
-                score++;
-                document.getElementById('p1q3').classList.add('correct');
-                document.getElementById('p1q3').classList.remove('incorrect');
-            } else {
-                document.getElementById('p1q3').classList.add('incorrect');
-                document.getElementById('p1q3').classList.remove('correct');
-            }
-
-            // Q4: Shadow price of espresso = 2
-            const q4 = parseFloat(document.getElementById('p1q4').value);
-            if (q4 === 2) {
-                score++;
-                document.getElementById('p1q4').classList.add('correct');
-                document.getElementById('p1q4').classList.remove('incorrect');
-            } else {
-                document.getElementById('p1q4').classList.add('incorrect');
-                document.getElementById('p1q4').classList.remove('correct');
-            }
-
-            // Q5: Espresso has higher shadow price
-            const q5 = document.querySelector('input[name="p1q5"]:checked');
-            if (q5 && q5.value === 'espresso') score++;
-
-            updateScore(0, score, 5);
-        }
-
-        function checkProblem2() {
-            let score = 0;
-
-            // Q1: 8(30) + 12(40) = 240 + 480 = 720
-            const q1 = parseFloat(document.getElementById('p2q1').value);
-            if (q1 === 720) {
-                score++;
-                document.getElementById('p2q1').classList.add('correct');
-                document.getElementById('p2q1').classList.remove('incorrect');
-            } else {
-                document.getElementById('p2q1').classList.add('incorrect');
-                document.getElementById('p2q1').classList.remove('correct');
-            }
-
-            // Q2: Both oven and labor are binding
-            const q2 = document.querySelector('input[name="p2q2"]:checked');
-            if (q2 && q2.value === 'both') score++;
-
-            // Q3: Trick question - Final Value > RHS means error in problem, answer is 0
-            const q3 = parseFloat(document.getElementById('p2q3').value);
-            if (q3 === 0) {
-                score++;
-                document.getElementById('p2q3').classList.add('correct');
-                document.getElementById('p2q3').classList.remove('incorrect');
-            } else {
-                document.getElementById('p2q3').classList.add('incorrect');
-                document.getElementById('p2q3').classList.remove('correct');
-            }
-
-            // Q4: 5 * 2 = 10
-            const q4 = parseFloat(document.getElementById('p2q4').value);
-            if (q4 === 10) {
-                score++;
-                document.getElementById('p2q4').classList.add('correct');
-                document.getElementById('p2q4').classList.remove('incorrect');
-            } else {
-                document.getElementById('p2q4').classList.add('incorrect');
-                document.getElementById('p2q4').classList.remove('correct');
-            }
-
-            // Q5: Labor has highest shadow price
-            const q5 = document.querySelector('input[name="p2q5"]:checked');
-            if (q5 && q5.value === 'labor') score++;
-
-            updateScore(1, score, 5);
-        }
-
-        function checkProblem3() {
-            let score = 0;
-
-            // Q1: 50(15) + 80(21) = 750 + 1680 = 2430
-            const q1 = parseFloat(document.getElementById('p3q1').value);
-            if (q1 === 2430) {
-                score++;
-                document.getElementById('p3q1').classList.add('correct');
-                document.getElementById('p3q1').classList.remove('incorrect');
-            } else {
-                document.getElementById('p3q1').classList.add('incorrect');
-                document.getElementById('p3q1').classList.remove('correct');
-            }
-
-            // Q2: 65 is within [33.33, 90]
-            const q2 = document.querySelector('input[name="p3q2"]:checked');
-            if (q2 && q2.value === 'no') score++;
-
-            // Q3: 165 is within [100, 180]
-            const q3 = document.querySelector('input[name="p3q3"]:checked');
-            if (q3 && q3.value === 'yes') score++;
-
-            // Q4: Slack = 120 - 102 = 18
-            const q4 = parseFloat(document.getElementById('p3q4').value);
-            if (q4 === 18) {
-                score++;
-                document.getElementById('p3q4').classList.add('correct');
-                document.getElementById('p3q4').classList.remove('incorrect');
-            } else {
-                document.getElementById('p3q4').classList.add('incorrect');
-                document.getElementById('p3q4').classList.remove('correct');
-            }
-
-            // Q5: 2430 + 10*12 = 2550
-            const q5 = parseFloat(document.getElementById('p3q5').value);
-            if (q5 === 2550) {
-                score++;
-                document.getElementById('p3q5').classList.add('correct');
-                document.getElementById('p3q5').classList.remove('incorrect');
-            } else {
-                document.getElementById('p3q5').classList.add('incorrect');
-                document.getElementById('p3q5').classList.remove('correct');
-            }
-
-            updateScore(2, score, 5);
-        }
-
-        function checkProblem4() {
-            let score = 0;
-
-            // Q1: 20(37.5) + 30(0) + 25(62.5) = 750 + 0 + 1562.5 = 2312.5
-            const q1 = parseFloat(document.getElementById('p4q1').value);
-            if (q1 === 2312.5) {
-                score++;
-                document.getElementById('p4q1').classList.add('correct');
-                document.getElementById('p4q1').classList.remove('incorrect');
-            } else {
-                document.getElementById('p4q1').classList.add('incorrect');
-                document.getElementById('p4q1').classList.remove('correct');
-            }
-
-            // Q2: Positive reduced cost
-            const q2 = document.querySelector('input[name="p4q2"]:checked');
-            if (q2 && q2.value === 'expensive') score++;
-
-            // Q3: Surplus = 86.25 - 75 = 11.25
-            const q3 = parseFloat(document.getElementById('p4q3').value);
-            if (q3 === 11.25) {
-                score++;
-                document.getElementById('p4q3').classList.add('correct');
-                document.getElementById('p4q3').classList.remove('incorrect');
-            } else {
-                document.getElementById('p4q3').classList.add('incorrect');
-                document.getElementById('p4q3').classList.remove('correct');
-            }
-
-            // Q4: Negative shadow price in minimization
-            const q4 = document.querySelector('input[name="p4q4"]:checked');
-            if (q4 && q4.value === 'reduce') score++;
-
-            // Q5: 2312.5 - 5*22.5 = 2312.5 - 112.5 = 2200
-            const q5 = parseFloat(document.getElementById('p4q5').value);
-            if (q5 === 2200) {
-                score++;
-                document.getElementById('p4q5').classList.add('correct');
-                document.getElementById('p4q5').classList.remove('incorrect');
-            } else {
-                document.getElementById('p4q5').classList.add('incorrect');
-                document.getElementById('p4q5').classList.remove('correct');
-            }
-
-            updateScore(3, score, 5);
-        }
-
-        function checkProblem5() {
-            let score = 0;
-
-            // Q1: 60(30) + 50(32) + 40(0) = 1800 + 1600 + 0 = 3400
-            const q1 = parseFloat(document.getElementById('p5q1').value);
-            if (q1 === 3400) {
-                score++;
-                document.getElementById('p5q1').classList.add('correct');
-                document.getElementById('p5q1').classList.remove('incorrect');
-            } else {
-                document.getElementById('p5q1').classList.add('incorrect');
-                document.getElementById('p5q1').classList.remove('correct');
-            }
-
-            // Q2: Only Min Product A is binding
-            const q2 = document.getElementById('p5q2').value.toLowerCase();
+            // Q2: Only Min Product A is binding (based on zero slack/surplus implication via shadow price)
+            const q2 = document.getElementById('p1q2').value.toLowerCase();
             if (q2.includes('min product a') || (q2.includes('min') && q2.includes('a'))) {
                 score++;
-                document.getElementById('p5q2').classList.add('correct');
-                document.getElementById('p5q2').classList.remove('incorrect');
+                document.getElementById('p1q2').classList.add('correct');
+                document.getElementById('p1q2').classList.remove('incorrect');
             } else {
-                document.getElementById('p5q2').classList.add('incorrect');
-                document.getElementById('p5q2').classList.remove('correct');
+                document.getElementById('p1q2').classList.add('incorrect');
+                document.getElementById('p1q2').classList.remove('correct');
             }
 
             // Q3: Reduced cost explanation
-            const q3 = document.querySelector('input[name="p5q3"]:checked');
+            const q3 = document.querySelector('input[name="p1q3"]:checked');
             if (q3 && q3.value === 'reducedcost') score++;
 
             // Q4: Within allowable range
-            const q4 = document.querySelector('input[name="p5q4"]:checked');
+            const q4 = document.querySelector('input[name="p1q4"]:checked');
             if (q4 && q4.value === 'no') score++;
 
             // Q5: Negative shadow price interpretation
-            const q5 = document.querySelector('input[name="p5q5"]:checked');
+            const q5 = document.querySelector('input[name="p1q5"]:checked');
             if (q5 && q5.value === 'hurts') score++;
 
             updateScore(4, score, 5);
         }
 
         function updateScore(problemIndex, newScore, maxScore) {
-            // Remove old score, add new score
             totalScore = totalScore - problemScores[problemIndex] + newScore;
             problemScores[problemIndex] = newScore;
-            
             document.getElementById('totalScore').textContent = totalScore;
             updateProgressBar();
 
-            const feedbackDiv = document.getElementById('feedback' + (problemIndex + 1));
+            const feedbackDiv = document.getElementById('feedback5');
             feedbackDiv.classList.add('show');
-            
+
             if (newScore === maxScore) {
                 feedbackDiv.className = 'feedback show correct';
                 feedbackDiv.innerHTML = '<h4>✓ Perfect! All answers correct!</h4><p>You earned ' + newScore + '/' + maxScore + ' points.</p>';
@@ -946,359 +364,18 @@
                 feedbackDiv.innerHTML = '<h4>Keep practicing!</h4><p>You earned ' + newScore + '/' + maxScore + ' points. Review the key concepts and try again.</p>';
             }
 
-            // Show correct answers
-            if (problemIndex === 0) {
-                feedbackDiv.innerHTML += `
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Correct Answers:</strong><br>
-                        1. Optimal profit = $170<br>
-                        2. Yes, both constraints are binding<br>
-                        3. Profit increases by $1<br>
-                        4. Profit increases by $2<br>
-                        5. Espresso (higher shadow price)
-                    </div>
-                `;
-            } else if (problemIndex === 1) {
-                feedbackDiv.innerHTML += `
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Correct Answers:</strong><br>
-                        1. Optimal profit = $720<br>
-                        2. Both Oven time and Labor are binding<br>
-                        3. Trick question - Flour constraint has error (0 slack)<br>
-                        4. Profit increases by $10<br>
-                        5. Labor (highest shadow price of $4)
-                    </div>
-                `;
-            } else if (problemIndex === 2) {
-                feedbackDiv.innerHTML += `
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Correct Answers:</strong><br>
-                        1. Optimal profit = $2,430<br>
-                        2. No, $65 is within allowable range [33.33, 90]<br>
-                        3. Yes, 165 is within [100, 180]<br>
-                        4. Wood slack = 18 units<br>
-                        5. New profit = $2,550
-                    </div>
-                `;
-            } else if (problemIndex === 3) {
-                feedbackDiv.innerHTML += `
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Correct Answers:</strong><br>
-                        1. Optimal cost = $2,312.50<br>
-                        2. Positive reduced cost makes it uneconomical<br>
-                        3. Quality surplus = 11.25<br>
-                        4. Reducing requirement saves cost<br>
-                        5. New cost = $2,200
-                    </div>
-                `;
-            } else if (problemIndex === 4) {
-                feedbackDiv.innerHTML += `
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
-                        <strong>Correct Answers:</strong><br>
-                        1. Optimal profit = $3,400<br>
-                        2. Only "Min Product A" is binding<br>
-                        3. Reduced cost of $8 means it's not worth producing<br>
-                        4. No, $75 is within [50, 80]<br>
-                        5. Constraint forces us to produce more A than optimal
-                    </div>
-                `;
-            }
+            // Show correct answers for Problem 1
+            feedbackDiv.innerHTML += `
+                <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
+                    <strong>Correct Answers:</strong><br>
+                    1. Optimal profit = $3,400<br>
+                    2. Only "Min Product A" is binding<br>
+                    3. Reduced cost of $8 means it's not worth producing<br>
+                    4. No, $75 is within [50, 80]<br>
+                    5. Constraint forces us to produce more A than optimal
+                </div>
+            `;
         }
     </script>
 </body>
 </html>
-                            What is the optimal profit?
-                        </div>
-                        <div class="input-group">
-                            <label>Calculate Z = 3(30) + 4(20)</label>
-                            <input type="number" id="p1q1" placeholder="Enter profit value">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">2</span>
-                            Are both constraints binding?
-                        </div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p1q2" id="p1q2a" value="yes">
-                                <label for="p1q2a">Yes, both Final Values equal their RHS values</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p1q2" id="p1q2b" value="no">
-                                <label for="p1q2b">No, at least one has slack</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">3</span>
-                            If you obtain 1 more ounce of milk, how much will profit increase?
-                        </div>
-                        <div class="input-group">
-                            <label>Use the shadow price of the Milk constraint</label>
-                            <input type="number" id="p1q3" placeholder="Enter profit increase">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">4</span>
-                            If you obtain 1 more espresso shot, how much will profit increase?
-                        </div>
-                        <div class="input-group">
-                            <input type="number" id="p1q4" placeholder="Enter profit increase">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">5</span>
-                            Which resource should you prioritize acquiring more of?
-                        </div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5a" value="milk">
-                                <label for="p1q5a">Milk (shadow price = $1)</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5b" value="espresso">
-                                <label for="p1q5b">Espresso (shadow price = $2)</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5c" value="same">
-                                <label for="p1q5c">Both are equally valuable</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="check-btn" onclick="checkProblem1()">Check Answers</button>
-                    <div class="feedback" id="feedback1"></div>
-                </div>
-            </div>
-
-            <!-- Problem 2: Easy-Medium - Slack and Binding -->
-            <div class="problem" id="problem2">
-                <div class="problem-header">
-                    <span class="difficulty-badge difficulty-easy">⭐⭐ Easy-Medium</span>
-                    <h2>Problem 2: Factory Production Planning</h2>
-                    <p>A factory produces widgets (x₁) and gadgets (x₂) with profit of $50 per widget and $80 per gadget.</p>
-                    <p style="margin-top: 10px;"><strong>Objective Function:</strong> Maximize Z = 50x₁ + 80x₂</p>
-                    <p><strong>Constraints:</strong></p>
-                    <ul style="margin-left: 25px; margin-top: 10px;">
-                        <li>Labor: 3x₁ + 5x₂ ≤ 150 hours</li>
-                        <li>Materials: 4x₁ + 2x₂ ≤ 120 units</li>
-                        <li>x₁, x₂ ≥ 0</li>
-                    </ul>
-                </div>
-
-                <div class="solver-output">
-                    <h3>📋 Solver Output</h3>
-                    
-                    <h4 style="margin-top: 20px; color: #185a9d;">Decision Variables:</h4>
-                    <table>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Final Value</th>
-                        </tr>
-                        <tr>
-                            <td>x₁ (Widgets)</td>
-                            <td>15</td>
-                        </tr>
-                        <tr>
-                            <td>x₂ (Gadgets)</td>
-                            <td>21</td>
-                        </tr>
-                    </table>
-
-                    <h4 style="margin-top: 20px; color: #185a9d;">Constraints:</h4>
-                    <table>
-                        <tr>
-                            <th>Constraint</th>
-                            <th>Final Value</th>
-                            <th>Shadow Price</th>
-                            <th>RHS</th>
-                        </tr>
-                        <tr>
-                            <td>Labor</td>
-                            <td>150</td>
-                            <td>12</td>
-                            <td>150</td>
-                        </tr>
-                        <tr>
-                            <td>Materials</td>
-                            <td>102</td>
-                            <td>0</td>
-                            <td>120</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="question-section">
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">1</span>
-                            What is the optimal profit?
-                        </div>
-                        <div class="input-group">
-                            <label>Calculate Z = 8(30) + 12(40)</label>
-                            <input type="number" id="p2q1" placeholder="Enter profit value">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">2</span>
-                            Which constraints are binding?
-                        </div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p2q2" id="p2q2a" value="oven">
-                                <label for="p2q2a">Only Oven time</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p2q2" id="p2q2b" value="labor">
-                                <label for="p2q2b">Only Labor</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p2q2" id="p2q2c" value="both">
-                                <label for="p2q2c">Both Oven time and Labor</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">3</span>
-                            How much slack exists in the Flour constraint?
-                        </div>
-                        <div class="input-group">
-                            <label>Note: Final Value shows 170, but RHS is 150. Something's wrong here - this indicates surplus, not slack!</label>
-                            <input type="number" id="p2q3" placeholder="This is a trick - enter 0 for no slack">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">4</span>
-                            If you could get 5 more minutes of oven time, how much would profit increase?
-                        </div>
-                        <div class="input-group">
-                            <label>Use shadow price of Oven time × 5 minutes</label>
-                            <input type="number" id="p2q4" placeholder="Enter profit increase">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">5</span>
-                            Which resource should you prioritize acquiring more of?
-                        </div>
-                        <div class="radio-group">
-                            <div class="radio-option">
-                                <input type="radio" name="p2q5" id="p2q5a" value="oven">
-                                <label for="p2q5a">Oven time (shadow price = $2)</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p2q5" id="p2q5b" value="labor">
-                                <label for="p2q5b">Labor (shadow price = $4)</label>
-                            </div>
-                            <div class="radio-option">
-                                <input type="radio" name="p2q5" id="p2q5c" value="flour">
-                                <label for="p2q5c">Flour (shadow price = $0)</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="check-btn" onclick="checkProblem2()">Check Answers</button>
-                    <div class="feedback" id="feedback2"></div>
-                </div>
-            </div>
-
-            <!-- Problem 3: Medium - Allowable Range -->
-            <div class="problem" id="problem3">
-                <div class="problem-header">
-                    <span class="difficulty-badge difficulty-medium">⭐⭐⭐ Medium</span>
-                    <h2>Problem 3: Furniture Manufacturing</h2>
-                    <p>A furniture company produces chairs (x₁) and tables (x₂) to maximize profit.</p>
-                    <p style="margin-top: 10px;"><strong>Objective Function:</strong> Maximize Z = 50x₁ + 80x₂</p>
-                    <p><strong>Constraints:</strong></p>
-                    <ul style="margin-left: 25px; margin-top: 10px;">
-                        <li>Labor: 3x₁ + 5x₂ ≤ 150 hours</li>
-                        <li>Wood: 4x₁ + 2x₂ ≤ 120 units</li>
-                        <li>x₁, x₂ ≥ 0</li>
-                    </ul>
-                </div>
-
-                <div class="solver-output">
-                    <h3>📋 Solver Output</h3>
-                    
-                    <h4 style="margin-top: 20px; color: #185a9d;">Decision Variables:</h4>
-                    <table>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Final Value</th>
-                            <th>Objective Coefficient</th>
-                            <th>Allowable Increase</th>
-                            <th>Allowable Decrease</th>
-                        </tr>
-                        <tr>
-                            <td>x₁ (Chairs)</td>
-                            <td>15</td>
-                            <td>50</td>
-                            <td>40</td>
-                            <td>16.67</td>
-                        </tr>
-                        <tr>
-                            <td>x₂ (Tables)</td>
-                            <td>21</td>
-                            <td>80</td>
-                            <td>25</td>
-                            <td>20</td>
-                        </tr>
-                    </table>
-
-                    <h4 style="margin-top: 20px; color: #185a9d;">Constraints:</h4>
-                    <table>
-                        <tr>
-                            <th>Constraint</th>
-                            <th>Final Value</th>
-                            <th>Shadow Price</th>
-                            <th>RHS</th>
-                            <th>Allowable Increase</th>
-                            <th>Allowable Decrease</th>
-                        </tr>
-                        <tr>
-                            <td>Labor</td>
-                            <td>150</td>
-                            <td>12</td>
-                            <td>150</td>
-                            <td>30</td>
-                            <td>50</td>
-                        </tr>
-                        <tr>
-                            <td>Wood</td>
-                            <td>102</td>
-                            <td>0</td>
-                            <td>120</td>
-                            <td>∞</td>
-                            <td>18</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="key-concept">
-                    <h4>💡 Key Concepts</h4>
-                    <ul>
-                        <li><strong>Allowable Increase/Decrease (Objective):</strong> Range where optimal solution stays the same (values don't change)</li>
-                        <li><strong>Allowable Increase/Decrease (RHS):</strong> Range where shadow price remains valid</li>
-                        <li><strong>Validity Range:</strong> [RHS - Allowable Decrease, RHS + Allowable Increase]</li>
-                    </ul>
-                </div>
-
-                <div class="question-section">
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">1</span>
