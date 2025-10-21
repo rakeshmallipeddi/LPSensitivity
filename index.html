@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sensitivity Analysis – Problem 1 Only</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sensitivity Analysis – Problem 1 Only</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -68,226 +69,197 @@
     </style>
 </head>
 <body>
-    <div class="score-display">
-        <h3>Your Score</h3>
-        <div class="score-value"><span id="totalScore">0</span> / 5</div>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>📊 Sensitivity Analysis Practice</h1>
-            <p>Problem 1 only – Multi‑Product Manufacturing</p>
-        </div>
-
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressBar"></div>
-        </div>
-
-        <div class="nav-tabs">
-            <button class="tab" onclick="showProblem(5)">
+<div class="score-display">
+<h3>Your Score</h3>
+<div class="score-value"><span id="totalScore">0</span> / 5</div>
+</div>
+<div class="container">
+<div class="header">
+<h1>📊 Sensitivity Analysis Practice</h1>
+<p>Problem 1 only – Multi‑Product Manufacturing</p>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="progressBar"></div>
+</div>
+<div class="nav-tabs">
+<button class="tab" onclick="showProblem(5)">
                 Problem 1
                 <span class="difficulty">Hard</span>
-            </button>
-        </div>
-
-        <div class="content">
-            <!-- Problem 1: Hard - Complex Multi-Period -->
-            <div class="problem active" id="problem5">
-                <div class="problem-header">
-                    <span class="difficulty-badge">⭐⭐⭐⭐⭐ Hard</span>
-                    <h2>Problem 1: Multi-Product Manufacturing</h2>
-                    <p>A manufacturer produces three products (A, B, C) across two departments with multiple constraints.</p>
-                    <p style="margin-top: 10px;"><strong>Objective Function:</strong> Maximize Z = 60A + 50B + 40C</p>
-                    <p><strong>Constraints:</strong></p>
-                    <ul style="margin-left: 25px; margin-top: 10px;">
-                        <li>Assembly time: 4A + 3B + 2C ≤ 240 hours</li>
-                        <li>Finishing time: 2A + 3B + 4C ≤ 200 hours</li>
-                        <li>Raw materials: 5A + 4B + 3C ≤ 300 units</li>
-                        <li>Minimum Product A: A ≥ 10 units</li>
-                        <li>Market demand for B: B ≤ 40 units</li>
-                    </ul>
-                </div>
-
-                <div class="solver-output">
-                    <h3>📋 Solver Output</h3>
-                    <h4 style="margin-top: 20px; color: #185a9d;">Decision Variables:</h4>
-                    <table>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Final Value</th>
-                            <th>Reduced Cost</th>
-                            <th>Obj Coefficient</th>
-                            <th>Allow. Inc</th>
-                            <th>Allow. Dec</th>
-                        </tr>
-                        <tr>
-                            <td>A (Product A)</td>
-                            <td>30</td>
-                            <td>0</td>
-                            <td>60</td>
-                            <td>20</td>
-                            <td>10</td>
-                        </tr>
-                        <tr>
-                            <td>B (Product B)</td>
-                            <td>32</td>
-                            <td>0</td>
-                            <td>50</td>
-                            <td>15</td>
-                            <td>12</td>
-                        </tr>
-                        <tr>
-                            <td>C (Product C)</td>
-                            <td>0</td>
-                            <td>8</td>
-                            <td>40</td>
-                            <td>∞</td>
-                            <td>8</td>
-                        </tr>
-                    </table>
-
-                    <h4 style="margin-top: 20px; color: #185a9d;">Constraints:</h4>
-                    <table>
-                        <tr>
-                            <th>Constraint</th>
-                            <th>Final Value</th>
-                            <th>Shadow Price</th>
-                            <th>RHS</th>
-                            <th>Allow. Inc</th>
-                            <th>Allow. Dec</th>
-                        </tr>
-                        <tr>
-                            <td>Assembly</td>
-                            <td>216</td>
-                            <td>0</td>
-                            <td>240</td>
-                            <td>∞</td>
-                            <td>24</td>
-                        </tr>
-                        <tr>
-                            <td>Finishing</td>
-                            <td>156</td>
-                            <td>0</td>
-                            <td>200</td>
-                            <td>∞</td>
-                            <td>44</td>
-                        </tr>
-                        <tr>
-                            <td>Materials</td>
-                            <td>278</td>
-                            <td>0</td>
-                            <td>300</td>
-                            <td>∞</td>
-                            <td>22</td>
-                        </tr>
-                        <tr>
-                            <td>Min Product A</td>
-                            <td>30</td>
-                            <td>-5</td>
-                            <td>10</td>
-                            <td>20</td>
-                            <td>15</td>
-                        </tr>
-                        <tr>
-                            <td>Max Product B</td>
-                            <td>32</td>
-                            <td>0</td>
-                            <td>40</td>
-                            <td>∞</td>
-                            <td>8</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="question-section">
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">1</span>
+</button>
+</div>
+<div class="content">
+<!-- Problem 1: Hard - Complex Multi-Period -->
+<div class="problem active" id="problem5">
+<div class="problem-header">
+<span class="difficulty-badge">⭐⭐⭐⭐⭐ Hard</span>
+<h2>Problem 1: Multi-Product Manufacturing</h2>
+<p>A manufacturer produces three products (A, B, C) across two departments with multiple constraints.</p>
+<p style="margin-top: 10px;"><strong>Objective Function:</strong> Maximize Z = 60A + 50B + 40C</p>
+<p><strong>Constraints:</strong></p>
+<ul style="margin-left: 25px; margin-top: 10px;">
+<li>Assembly time: 4A + 3B + 2C ≤ 240 hours</li>
+<li>Finishing time: 2A + 3B + 4C ≤ 200 hours</li>
+<li>Raw materials: 5A + 4B + 3C ≤ 300 units</li>
+<li>Minimum Product A: A ≥ 10 units</li>
+<li>Market demand for B: B ≤ 40 units</li>
+</ul>
+</div>
+<div class="solver-output">
+<h3>📋 Solver Output</h3>
+<h4 style="margin-top: 20px; color: #185a9d;">Decision Variables:</h4>
+<table>
+<tr>
+<th>Variable</th>
+<th>Final Value</th>
+<th>Reduced Cost</th>
+<th>Obj Coefficient</th>
+<th>Allow. Inc</th>
+<th>Allow. Dec</th>
+</tr>
+<tr>
+<td>A (Product A)</td>
+<td>42.85714286</td>
+<td>0</td>
+<td>60</td>
+<td>6.66666667</td>
+<td>0</td>
+</tr>
+<tr>
+<td>B (Product B)</td>
+<td>0</td>
+<td>0</td>
+<td>50</td>
+<td>0</td>
+<td>1e30</td>
+</tr>
+<tr>
+<td>C (Product C)</td>
+<td>28.57142857</td>
+<td>0</td>
+<td>40</td>
+<td>80</td>
+<td>0</td>
+</tr>
+</table>
+<h4 style="margin-top: 20px; color: #185a9d;">Constraints:</h4>
+<table>
+<tr>
+<th>Constraint</th>
+<th>Final Value</th>
+<th>Shadow Price</th>
+<th>RHS</th>
+<th>Allow. Inc</th>
+<th>Allow. Dec</th>
+</tr>
+<tr>
+<td>Assembly</td>
+<td>228.5714286</td>
+<td>0</td>
+<td>240</td>
+<td>1e30</td>
+<td>11.42857143</td>
+</tr>
+<tr>
+<td>Finishing</td>
+<td>200</td>
+<td>1.428571429</td>
+<td>200</td>
+<td>153.3333333</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Materials</td>
+<td>300</td>
+<td>11.42857143</td>
+<td>300</td>
+<td>13.33333333</td>
+<td>115</td>
+</tr>
+<tr>
+<td>Min Product A</td>
+<td>42.85714286</td>
+<td>0</td>
+<td>10</td>
+<td>32.85714286</td>
+<td>1e30</td>
+</tr>
+<tr>
+<td>Max Product B</td>
+<td>0</td>
+<td>0</td>
+<td>40</td>
+<td>1e30</td>
+<td>40</td>
+</tr>
+</table>
+</div>
+<div class="question-section">
+<div class="question">
+<div class="question-text">
+<span class="question-number">1</span>
                             What is the optimal profit?
                         </div>
-                        <div class="input-group">
-                            <input type="number" id="p1q1" placeholder="Enter profit">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">2</span>
+<div class="input-group">
+<input id="p1q1" placeholder="Enter profit" type="number"/>
+</div>
+</div>
+<div class="question">
+<div class="question-text">
+<span class="question-number">2</span>
                             Which constraints are binding (have zero slack/surplus)?
                         </div>
-                        <div class="input-group">
-                            <label>Enter constraint names separated by commas (e.g., "Assembly, Finishing")</label>
-                            <input type="text" id="p1q2" placeholder="Enter binding constraints">
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">3</span>
-                            Why should Product C not be produced?
-                        </div>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="p1q3" id="p1q3a" value="reducedcost">
-                                It has a positive reduced cost of $8, meaning profit would need to increase by $8 to make it worthwhile
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="p1q3" id="p1q3b" value="resources">
+<div class="input-group">
+<label>Enter constraint names separated by commas (e.g., "Assembly, Finishing")</label>
+<input id="p1q2" placeholder="Enter binding constraints" type="text"/>
+</div>
+</div>
+<div class="question">
+<div class="question-text">
+<span class="question-number">3</span>Why is Product B not produced?</div>
+<div class="radio-group">
+<label class="radio-option">
+<input id="p1q3a" name="p1q3" type="radio" value="zero_rc"/> It has a reduced cost of 0, implying multiple optimal solutions; producing B does not improve the objective at current prices</label>
+<label class="radio-option">
+<input id="p1q3b" name="p1q3" type="radio" value="resources"/>
                                 Not enough resources available
                             </label>
-                            <label class="radio-option">
-                                <input type="radio" name="p1q3" id="p1q3c" value="demand">
+<label class="radio-option">
+<input id="p1q3c" name="p1q3" type="radio" value="demand"/>
                                 No market demand exists
                             </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">4</span>
+</div>
+</div>
+<div class="question">
+<div class="question-text">
+<span class="question-number">4</span>
                             If the profit per unit of Product A changes from $60 to $75, will the optimal production plan change?
                         </div>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="p1q4" id="p1q4a" value="no">
-                                No, $75 is within the allowable range [$50, $80]
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="p1q4" id="p1q4b" value="yes">
-                                Yes, it exceeds the allowable increase
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="question">
-                        <div class="question-text">
-                            <span class="question-number">5</span>
-                            What is the economic interpretation of the shadow price of -$5 for the "Min Product A" constraint?
-                        </div>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5a" value="hurts">
-                                Each unit increase in the minimum reduces profit by $5; this constraint is forcing us to produce more A than optimal
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5b" value="helps">
-                                The constraint helps increase profit by $5 per unit
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="p1q5" id="p1q5c" value="nonbinding">
-                                The constraint is non-binding and has no effect
-                            </label>
-                        </div>
-                    </div>
-
-                    <button class="check-btn" onclick="checkProblem5()">Check Answers</button>
-                    <div class="feedback" id="feedback5"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+<div class="radio-group">
+<label class="radio-option">
+<input id="p1q4a" name="p1q4" type="radio" value="no"/> No, $75 is within the allowable range [$50, $80]</label>
+<label class="radio-option">
+<input id="p1q4b" name="p1q4" type="radio" value="yes"/> Yes, it exceeds the allowable increase</label>
+</div>
+</div>
+<div class="question">
+<div class="question-text">
+<span class="question-number">5</span>What is the economic interpretation of the shadow price of $0 for the "Min Product A" constraint?</div>
+<div class="radio-group">
+<label class="radio-option">
+<input id="p1q5a" name="p1q5" type="radio" value="nonbinding_zero"/> The constraint is non-binding; small changes to the minimum have no effect on profit within the allowable range</label>
+<label class="radio-option">
+<input id="p1q5b" name="p1q5" type="radio" value="helps"/> Tightening the minimum increases profit by $0 per unit</label>
+<label class="radio-option">
+<input id="p1q5c" name="p1q5" type="radio" value="hurts_old"/> The constraint reduces profit by $5 per unit</label>
+</div>
+</div>
+<button class="check-btn" onclick="checkProblem5()">Check Answers</button>
+<div class="feedback" id="feedback5"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
         // With only Problem 1, keep the same scoring mechanics but cap at 5.
         let totalScore = 0;
         // Keep the array length 5 so updateScore logic for index 4 works unchanged.
@@ -307,9 +279,9 @@
         function checkProblem5() {
             let score = 0;
 
-            // Q1: 60(30) + 50(32) + 40(0) = 1800 + 1600 + 0 = 3400
+            // Q1: 60(42.8571) + 50(0) + 40(28.5714) ≈ 3714.2857
             const q1 = parseFloat(document.getElementById('p1q1').value);
-            if (q1 === 3400) {
+            if (!isNaN(q1) && Math.abs(q1 - 3714.2857) < 0.1) {
                 score++;
                 document.getElementById('p1q1').classList.add('correct');
                 document.getElementById('p1q1').classList.remove('incorrect');
@@ -318,9 +290,9 @@
                 document.getElementById('p1q1').classList.remove('correct');
             }
 
-            // Q2: Only Min Product A is binding (based on zero slack/surplus implication via shadow price)
+            // Q2: Finishing and Materials are binding
             const q2 = document.getElementById('p1q2').value.toLowerCase();
-            if (q2.includes('min product a') || (q2.includes('min') && q2.includes('a'))) {
+            if (q2.includes('finishing') && q2.includes('materials')) {
                 score++;
                 document.getElementById('p1q2').classList.add('correct');
                 document.getElementById('p1q2').classList.remove('incorrect');
@@ -331,11 +303,11 @@
 
             // Q3: Reduced cost explanation
             const q3 = document.querySelector('input[name="p1q3"]:checked');
-            if (q3 && q3.value === 'reducedcost') score++;
+            if (q3 && q3.value === 'zero_rc') score++;
 
             // Q4: Within allowable range
             const q4 = document.querySelector('input[name="p1q4"]:checked');
-            if (q4 && q4.value === 'no') score++;
+            if (q4 && q4.value === 'yes') score++;
 
             // Q5: Negative shadow price interpretation
             const q5 = document.querySelector('input[name="p1q5"]:checked');
@@ -368,11 +340,11 @@
             feedbackDiv.innerHTML += `
                 <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 8px;">
                     <strong>Correct Answers:</strong><br>
-                    1. Optimal profit = $3,400<br>
-                    2. Only "Min Product A" is binding<br>
-                    3. Reduced cost of $8 means it's not worth producing<br>
-                    4. No, $75 is within [50, 80]<br>
-                    5. Constraint forces us to produce more A than optimal
+                    1. Optimal profit ≈ $3,714.29<br>
+                    2. Binding constraints: Finishing and Materials<br>
+                    3. Product B not produced; reduced cost = 0 implies alternate optimal solutions<br>
+                    4. Yes, $75 exceeds the allowable increase for A (range [$60, $66.6667])<br>
+                    5. Shadow price $0 ⇒ constraint is non-binding within range
                 </div>
             `;
         }
