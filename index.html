@@ -291,15 +291,15 @@
             }
 
             // Q2: Finishing and Materials are binding
-            const q2 = document.getElementById('p1q2').value.toLowerCase();
-            if (q2.includes('finishing') && q2.includes('materials')) {
-                score++;
-                document.getElementById('p1q2').classList.add('correct');
-                document.getElementById('p1q2').classList.remove('incorrect');
-            } else {
-                document.getElementById('p1q2').classList.add('incorrect');
-                document.getElementById('p1q2').classList.remove('correct');
-            }
+            const q2 = document.getElementById('p1q2').value.toLowerCase().trim();
+              if (q2.includes('finishing') && q2.includes('materials')) {
+                  score++;
+                  document.getElementById('p1q2').classList.add('correct');
+                  document.getElementById('p1q2').classList.remove('incorrect');
+              } else {
+                  document.getElementById('p1q2').classList.add('incorrect');
+                  document.getElementById('p1q2').classList.remove('correct');
+              }
 
             // Q3: Reduced cost explanation
             const q3 = document.querySelector('input[name="p1q3"]:checked');
